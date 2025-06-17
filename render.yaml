@@ -1,0 +1,35 @@
+version: 2
+services:
+  - type: web
+    name: nosh-backend
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        fromDatabase:
+          name: nosh-db
+          property: connectionString
+      - key: FRONTEND_URL
+        value: https://nosh-frontend.onrender.com
+
+  - type: web
+    name: nosh-frontend
+    env: static
+    plan: free
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+databases:
+  - name: nosh-db
+    plan: free
