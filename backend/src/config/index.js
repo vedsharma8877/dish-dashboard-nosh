@@ -13,7 +13,12 @@ const config = {
     cors: {
         origins: process.env.ALLOWED_ORIGINS ?
             process.env.ALLOWED_ORIGINS.split(',') :
-            ['http://localhost:3000'],
+            [
+                'http://localhost:3000',
+                'http://localhost:5173',
+                'https://dish-dashboard-nosh.vercel.app',
+                'https://nosh-frontend.onrender.com'
+            ],
         credentials: true
     },
     rateLimit: {
@@ -21,7 +26,12 @@ const config = {
         max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100
     },
     socket: {
-        corsOrigin: process.env.SOCKET_CORS_ORIGIN || 'http://localhost:3000'
+        corsOrigin: process.env.SOCKET_CORS_ORIGIN || [
+            'http://localhost:3000',
+            'http://localhost:5173',
+            'https://dish-dashboard-nosh.vercel.app',
+            'https://nosh-frontend.onrender.com'
+        ]
     }
 };
 

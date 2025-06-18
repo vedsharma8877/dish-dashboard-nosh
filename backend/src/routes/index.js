@@ -8,7 +8,11 @@ router.get('/health', (req, res) => {
         message: 'NOSH API is running!',
         timestamp: new Date().toISOString(),
         uptime: process.uptime(),
-        environment: process.env.NODE_ENV || 'development'
+        environment: process.env.NODE_ENV || 'development',
+        cors: {
+            allowedOrigins: process.env.ALLOWED_ORIGINS?.split(',') || ['localhost'],
+            socketOrigins: process.env.SOCKET_CORS_ORIGIN?.split(',') || ['localhost']
+        }
     });
 });
 

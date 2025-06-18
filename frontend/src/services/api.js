@@ -4,7 +4,8 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
 
 const api = axios.create({
     baseURL: API_BASE_URL,
-    timeout: 10000,
+    timeout: 15000,
+    withCredentials: true,
     headers: {
         'Content-Type': 'application/json',
     },
@@ -28,6 +29,14 @@ api.interceptors.response.use(
     },
     (error) => {
         console.error('API Error:', error.response?.data || error.message);
+
+        // Handle specific error cases
+        if (error.code === 'ECONNABORTED') {
+            console.error('Request timeout');
+        } else if (error.response?.status === 0) {
+            console.error('Network error - check CORS and server availability');
+        }
+
         return Promise.reject(error);
     }
 );

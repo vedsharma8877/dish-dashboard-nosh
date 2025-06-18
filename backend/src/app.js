@@ -22,8 +22,11 @@ const server = http.createServer(app);
 const io = socketIo(server, {
     cors: {
         origin: config.socket.corsOrigin,
-        methods: ['GET', 'POST']
-    }
+        methods: ['GET', 'POST'],
+        credentials: true
+    },
+    transports: ['websocket', 'polling'],
+    allowEIO3: true
 });
 
 // Make io globally available for real-time updates
