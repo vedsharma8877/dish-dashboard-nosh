@@ -9,7 +9,7 @@ export default defineConfig({
         open: true,
         proxy: {
             '/api': {
-                target: 'http://localhost:5000',
+                target: process.env.VITE_API_URL || 'http://localhost:5000',
                 changeOrigin: true,
                 secure: false,
             }
@@ -17,11 +17,22 @@ export default defineConfig({
     },
     build: {
         outDir: 'dist',
-        sourcemap: true,
+        sourcemap: false, // Disable sourcemaps in production for better performance
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    vendor: ['react', 'react-dom'],
+                    socket: ['socket.io-client']
+                }
+            }
+        }
     },
     resolve: {
         alias: {
             '@': '/src',
         },
     },
+    define: {
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+    }
 })
